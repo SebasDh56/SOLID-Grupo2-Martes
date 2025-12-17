@@ -47,6 +47,7 @@ Con esta refactorización, cada subclase cumple adecuadamente el contrato de las
 
 
 -----------Reflexión sobre el Principio SOLID aplicado (DIP)-------------------------------
+
 En este ejercicio se aplicó el Principio de Inversión de Dependencias (Dependency Inversion Principle), uno de los principios fundamentales de SOLID. Este principio establece que los módulos de alto nivel no deben depender de módulos de bajo nivel, sino que ambos deben depender de abstracciones. Además, las abstracciones no deben depender de los detalles concretos, sino que los detalles deben depender de las abstracciones.
 En el código original, la clase PaymentProcessor dependía directamente de la implementación concreta CreditCardPayment, creando un acoplamiento fuerte. Esto implicaba que cualquier cambio en el método de pago o la adición de nuevos (como PayPal o criptomonedas) requería modificar directamente PaymentProcessor, violando el principio y dificultando la extensibilidad y el mantenimiento.
 Tras la refactorización, se creó una interfaz PaymentMethod que define el contrato abstracto para procesar pagos. Las clases concretas (CreditCardPayment, PayPalPayment, CryptoPayment) implementan esta interfaz, y PaymentProcessor ahora depende únicamente de la abstracción, recibiendo la implementación concreta mediante inyección de dependencias (a través del constructor).
@@ -54,6 +55,7 @@ Este cambio invierte la dirección de la dependencia: las clases de alto nivel (
 En conclusión, aplicar el DIP promueve un diseño desacoplado y escalable, donde los componentes de alto nivel permanecen estables mientras los detalles de implementación pueden variar libremente. Este ejercicio demuestra cómo el uso de abstracciones e inyección de dependencias logra un código más limpio, testable y preparado para futuros cambios.
 
 --------------------Reflexión sobre el Principio SOLID aplicado (ISP)-----------------------------------
+
 En este ejercicio se aplicó el Principio de Segregación de Interfaces (Interface Segregation Principle), que forma parte de los principios SOLID. Este principio indica que ningún cliente debe verse obligado a depender de métodos que no utiliza. En otras palabras, es preferible tener muchas interfaces pequeñas y específicas que una sola interfaz grande y general.
 El código original presentaba una interfaz Device que incluía los métodos turnOn(), turnOff() y charge(). Esto obligaba a todas las implementaciones, incluso aquellas que no eran recargables como DisposableCamera, a proporcionar una implementación para charge(), lo que se resolvía lanzando una excepción en tiempo de ejecución. Esta situación viola el ISP, ya que fuerza a los clientes a depender de métodos irrelevantes y genera código frágil y propenso a errores.
 Para corregirlo, se dividió la interfaz original en dos interfaces más específicas: Switchable (con turnOn() y turnOff()) y Chargeable (con charge()). De esta forma:
